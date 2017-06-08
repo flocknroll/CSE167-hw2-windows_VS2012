@@ -90,7 +90,7 @@ void display()
 	// You need to use scale, translate and modelview to 
 	// set up the net transformation matrix for the objects.  
 	// Account for GLM issues, matrix order (!!), etc.  
-	transf = tr * sc * mv;
+	transf = sc * tr * mv;
 
 	glLoadMatrixf(&transf[0][0]);
 
