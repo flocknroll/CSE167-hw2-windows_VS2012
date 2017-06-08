@@ -84,6 +84,12 @@ void display()
         }
         glUniform4fv(lightpos, numused, lightposn);
         glUniform4fv(lightcol, numused, lightcolor);
+        glUniform1i(numusedcol, numused);
+        glUniform4fv(ambientcol, 1, ambient);
+        glUniform4fv(diffusecol, 1, diffuse);
+        glUniform4fv(specularcol, 1, specular);
+        glUniform4fv(emissioncol, 1, emission);
+        glUniform1f(shininesscol, shininess);
     }
     else
     {

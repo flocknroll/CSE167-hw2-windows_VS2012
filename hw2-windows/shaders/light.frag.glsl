@@ -31,19 +31,63 @@ uniform vec4 specular;
 uniform vec4 emission; 
 uniform float shininess; 
 
+vec4 ComputeLight (const in vec3 direction, const in vec4 lightcolor, const in vec3 normal, const in vec3 halfvec, const in vec4 mydiffuse, const in vec4 myspecular, const in float myshininess) {
+
+	float nDotL = dot(normal, direction)  ;         
+	vec4 lambert = mydiffuse * lightcolor * max (nDotL, 0.0) ;  
+
+	float nDotH = dot(normal, halfvec) ; 
+	vec4 phong = myspecular * lightcolor * pow (max(nDotH, 0.0), myshininess) ; 
+
+	vec4 retval = lambert + phong ; 
+	return retval ;            
+}       
+
 void main (void) 
 {       
-    if (enablelighting) {       
-        vec4 finalcolor; 
+    if (enablelighting)
+	{       
+        // They eye is always at (0,0,0) looking down -z axis 
+		// Also compute current fragment position and direction to eye 
 
-        // YOUR CODE FOR HW 2 HERE
-        // A key part is implementation of the fragment shader
+		const vec3 eyepos = vec3(0,0,0) ; 
+		vec4 _mypos = gl_ModelViewMatrix * myvertex ; 
+		vec3 mypos = _mypos.xyz / _mypos.w ; // Dehomogenize current location 
+		vec3 eyedirn = normalize(eyepos - mypos) ; 
 
-        // Color all pixels black for now, remove this in your implementation!
-        finalcolor = vec4(0,0,0,1); 
+		// Compute normal, needed for shading. 
+		vec3 normal = normalize(gl_NormalMatrix * mynormal) ; 
 
-        gl_FragColor = finalcolor; 
-    } else {
+		gl_FragColor = ambient;
+
+		for (int i = 0; i < numused; ++i)
+		{
+			vec4 pos = lightposn[i];
+			vec4 color = lightcolor[i];
+			vec4 res;
+			vec3 direction;
+			vec3 half_;
+
+			if (pos.w != 0)
+			{
+				// w > 0 : point 
+				vec3 position = pos.xyz / pos.w ; 
+				direction = normalize (position - mypos) ; // no attenuation 
+			}
+			else
+			{
+				// w == 0 : directional
+				direction = normalize (pos.xyz) ; 
+			}
+			
+			half_ = normalize (direction + eyedirn) ; 
+			res = ComputeLight(direction, color, normal, half_, diffuse, specular, shininess) ;
+
+			gl_FragColor += res;
+		}
+    }
+	else
+	{
         gl_FragColor = color; 
     }
 }
