@@ -68,17 +68,23 @@ mat4 Transform::perspective(float fovy, float aspect, float zNear, float zFar)
 
 mat4 Transform::scale(const float &sx, const float &sy, const float &sz) 
 {
-    mat4 ret;
-    // YOUR CODE FOR HW2 HERE
-    // Implement scaling 
+    mat4 ret = mat4();
+    
+	ret[0][0] = sx;
+	ret[1][1] = sy;
+	ret[2][2] = sz;
+
     return ret;
 }
 
 mat4 Transform::translate(const float &tx, const float &ty, const float &tz) 
 {
-    mat4 ret;
-    // YOUR CODE FOR HW2 HERE
-    // Implement translation 
+	mat4 ret = mat4();
+
+	ret[3][0] = tx;
+	ret[3][1] = ty;
+	ret[3][2] = tz;
+
     return ret;
 }
 
