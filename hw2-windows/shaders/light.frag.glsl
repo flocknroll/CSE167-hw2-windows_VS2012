@@ -70,7 +70,7 @@ void main (void)
 
 			if (pos.w != 0)
 			{
-				// w > 0 : point 
+				// w != 0 : point 
 				vec3 position = pos.xyz / pos.w ; 
 				direction = normalize (position - mypos) ; // no attenuation 
 			}
