@@ -269,12 +269,10 @@ void readfile(const char* filename)
                     validinput = readvals(s, 3, values);
                     if (validinput)
                     {
-
-                        // YOUR CODE FOR HW 2 HERE.  
                         // Think about how the transformation stack is affected
                         // You might want to use helper functions on top of file. 
                         // Also keep in mind what order your matrix is!
-
+                        rightmultiply(Transform::translate(values[0], values[1], values[2]), transfstack);
                     }
                 }
                 else if (cmd == "scale")
@@ -283,11 +281,10 @@ void readfile(const char* filename)
                     if (validinput)
                     {
 
-                        // YOUR CODE FOR HW 2 HERE.  
                         // Think about how the transformation stack is affected
                         // You might want to use helper functions on top of file.  
                         // Also keep in mind what order your matrix is!
-
+                        rightmultiply(Transform::scale(values[0], values[1], values[2]), transfstack);
                     }
                 }
                 else if (cmd == "rotate")
@@ -295,14 +292,14 @@ void readfile(const char* filename)
                     validinput = readvals(s, 4, values);
                     if (validinput)
                     {
-
-                        // YOUR CODE FOR HW 2 HERE. 
                         // values[0..2] are the axis, values[3] is the angle.  
                         // You may want to normalize the axis (or in Transform::rotate)
                         // See how the stack is affected, as above.  
                         // Note that rotate returns a mat3. 
                         // Also keep in mind what order your matrix is!
-
+                        vec3 axis = glm::normalize(vec3(values[0], values[1], values[2]));
+                        mat4 matrix = mat4(Transform::rotate(values[3], axis));
+                        rightmultiply(matrix, transfstack);
                     }
                 }
 
