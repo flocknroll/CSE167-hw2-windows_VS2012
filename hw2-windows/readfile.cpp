@@ -191,13 +191,28 @@ void readfile(const char* filename)
                     validinput = readvals(s, 10, values); // 10 values eye cen up fov
                     if (validinput)
                     {
-
-                        // YOUR CODE FOR HW 2 HERE
                         // Use all of values[0...9]
                         // You may need to use the upvector fn in Transform.cpp
                         // to set up correctly. 
-                        // Set eyeinit upinit center fovy in variables.h 
+                        // Set eyeinit upinit center fovy in variables.h
+                        GLfloat lookfromx = values[0];
+                        GLfloat lookfromy = values[1];
+                        GLfloat lookfromz = values[2];
 
+                        GLfloat lookatx = values[3];
+                        GLfloat lookaty = values[4];
+                        GLfloat lookatz = values[5];
+
+                        GLfloat upx = values[6];
+                        GLfloat upy = values[7];
+                        GLfloat upz = values[8];
+
+                        eyeinit = vec3(lookfromx, lookfromy, lookfromz);
+                        center = vec3(lookatx, lookaty, lookatz);
+                        vec3 zvec = center - eyeinit;
+                        upinit = Transform::upvector(vec3(upx, upy, upz), zvec);
+
+                        fovy = values[9];
                     }
                 }
 
