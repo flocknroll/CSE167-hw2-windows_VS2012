@@ -88,11 +88,6 @@ void display()
         delete translight;
         glUniform4fv(lightcol, numused, lightcolor);
         glUniform1i(numusedcol, numused);
-        glUniform4fv(ambientcol, 1, ambient);
-        glUniform4fv(diffusecol, 1, diffuse);
-        glUniform4fv(specularcol, 1, specular);
-        glUniform4fv(emissioncol, 1, emission);
-        glUniform1f(shininesscol, shininess);
     }
     else
     {
@@ -115,10 +110,18 @@ void display()
     {
         object* obj = &(objects[i]); // Grabs an object struct.
 
-        // YOUR CODE FOR HW 2 HERE. 
         // Set up the object transformations 
         // And pass in the appropriate material properties
         // Again glUniform() related functions will be useful
+        glUniform4fv(ambientcol, 1, obj->ambient);
+        glUniform4fv(diffusecol, 1, obj->diffuse);
+        glUniform4fv(specularcol, 1, obj->specular);
+        glUniform4fv(emissioncol, 1, obj->emission);
+        glUniform1f(shininesscol, obj->shininess);
+
+        glPushMatrix();
+        mat4 matrix = transf * obj->transform;
+        glLoadMatrixf(&matrix[0][0]);
 
         // Actually draw the object
         // We provide the actual glut drawing functions for you.  
@@ -136,7 +139,7 @@ void display()
         {
             glutSolidTeapot(obj->size);
         }
-
+        glPopMatrix();
     }
 
     glutSwapBuffers();
